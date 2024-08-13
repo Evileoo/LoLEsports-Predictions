@@ -9,4 +9,5 @@ If you have any suggestion, feel free to create an issue
 - [ ] create statistics command
 - [ ] Create GitHub wiki page
 - [ ] Deploy the bot
+
 ...
