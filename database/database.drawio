@@ -1,0 +1,22 @@
+<mxfile host="65bd71144e">
+    <diagram id="ggqLzHgaAES7Uofz30xR" name="Page-1">
+        <mxGraphModel dx="1394" dy="655" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="6" value="match" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="80" width="200" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="match_id&lt;br&gt;league&lt;br&gt;year&lt;br&gt;split_tournament&lt;br&gt;team1&lt;br&gt;team2&lt;br&gt;best_of&lt;br&gt;team1score&lt;br&gt;team2score" style="rounded=0;whiteSpace=wrap;html=1;" parent="6" vertex="1">
+                    <mxGeometry y="20" width="200" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="prediction" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="80" width="200" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="match_id&lt;br&gt;user_id&lt;br&gt;team1score&lt;br&gt;team2score" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="8">
+                    <mxGeometry y="20" width="200" height="180" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
