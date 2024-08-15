@@ -9,8 +9,8 @@
   },
   "license": "GPL-3.0",
   "scripts": {
-    "indexenv": "node --env-file .env ./src/index.js",
-    "deployenv": "node --env-file .env ./src/deploy-commands.js"
+    "i": "node --env-file .env ./src/index.js",
+    "d": "node --env-file .env ./src/deploy-commands.js"
   },
   "dependencies": {
     "discord.js": "^14.15.3",
