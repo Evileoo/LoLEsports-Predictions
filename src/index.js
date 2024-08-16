@@ -12,22 +12,45 @@ const client = new Client({
 client.commands = new Collection();
 const commands = fs.readdirSync("./src/commands").filter(file => file.endsWith(".js"));
 for(let command of commands){
-    const commandfile = await import(`./commands/${command}`);
-    //console.log(commandfile.command);
-    client.commands.set(commandfile.command.data.name, commandfile.command);
+    const commandFile = await import(`./commands/${command}`);
+    client.commands.set(commandFile.command.data.name, commandFile.command);
+}
+
+// Create buttons collection
+client.buttons = new Collection();
+const buttons = fs.readdirSync("./src/buttons").filter(file => file.endsWith(".js"));
+for(let button of buttons){
+    const buttonFile = await import(`./buttons/${button}`);
+    client.buttons.set(button.split(".")[0], buttonFile.button);
+}
+
+// Create user context menus collection
+client.userContextMenu = new Collection();
+const userContextMenus = fs.readdirSync("./src/userContextMenus").filter(file => file.endsWith(".js"));
+for(let userContextMenu of userContextMenus){
+    const userContextMenuFile = await import(`./userContextMenus/${userContextMenu}`);
+    client.userContextMenu.set(userContextMenuFile.menu.data.name, userContextMenuFile.menu);
+}
+
+// Create modal collection
+client.modal = new Collection();
+const modals = fs.readdirSync("./src/modals").filter(file => file.endsWith(".js"));
+for(let modal of modals){
+    const modalFile = await import(`./modals/${modal}`);
+    client.modal.set(modal.split(".")[0], modalFile.modal);
 }
 
 // Read events
 const events = fs.readdirSync("./src/events").filter(file => file.endsWith(".js"));
 for(let event of events){
-    const eventfile = await import(`./events/${event}`);
-    if(eventfile.event.once){
-        client.once(eventfile.event.name, (...args) => {
-            eventfile.event.execute(...args);
+    const eventFile = await import(`./events/${event}`);
+    if(eventFile.event.once){
+        client.once(eventFile.event.name, (...args) => {
+            eventFile.event.execute(...args);
         });
     } else {
-        client.on(eventfile.event.name, (...args) => {
-            eventfile.event.execute(...args);
+        client.on(eventFile.event.name, (...args) => {
+            eventFile.event.execute(...args);
         });
     }
 }

@@ -21,15 +21,15 @@ export const event = {
 		} else if (interaction.isButton()) {
 			// respond to the button
 			console.log(`Button clicked`);
-		} else if (interaction.isStringSelectMenu()) {
-			// respond to the select menu
-			console.log(`Choice selected in string select menu`);
-		} else if (interaction.isContextMenuCommand()) {
-			// Respond to the context menu
-			console.log(`Context menu command selected`);
+			console.log(interaction);
+		} else if (interaction.isUserContextMenuCommand()) {
+			// Respond to the context menu (user)
+			console.log(`User context menu command selected`);
+			console.log(interaction);
 		} else if (interaction.isModalSubmit()) {
 			// Respond to the modal
 			console.log(`Modal submitted`);
+			console.log(interaction);
 		} else {
 			interaction.reply({
 				content: `I don't know what you did, but this message isn't supposed to be shown`,
