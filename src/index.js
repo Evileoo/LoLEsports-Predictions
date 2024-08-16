@@ -1,11 +1,14 @@
 import { Client, GatewayIntentBits, Collection } from 'discord.js';
 import fs from 'fs';
 
-
+// Create client instance
 const client = new Client({
-    intents: GatewayIntentBits.Guilds
+    intents: [
+        GatewayIntentBits.Guilds
+    ]
 });
 
+// Create commands collection
 client.commands = new Collection();
 const commands = fs.readdirSync("./src/commands").filter(file => file.endsWith(".js"));
 for(let command of commands){
@@ -14,6 +17,7 @@ for(let command of commands){
     client.commands.set(commandfile.command.data.name, commandfile.command);
 }
 
+// Read events
 const events = fs.readdirSync("./src/events").filter(file => file.endsWith(".js"));
 for(let event of events){
     const eventfile = await import(`./events/${event}`);
@@ -28,4 +32,5 @@ for(let event of events){
     }
 }
 
-await client.login(process.env.BETATOKEN);
+// Login
+await client.login(process.env.STABLETOKEN);

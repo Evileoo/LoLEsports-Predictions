@@ -3,6 +3,7 @@ import fs from 'fs';
 
 refresh();
 
+// Deploy commands
 async function refresh(){
     const commands = [];
     const commandFiles = fs.readdirSync(`./src/commands`).filter(file => file.endsWith(`.js`));
@@ -12,13 +13,13 @@ async function refresh(){
         commands.push(command.command.data.toJSON());
     }
 
-    const rest = new REST({ version: '10' }).setToken(process.env.BETATOKEN);
+    const rest = new REST({ version: '10' }).setToken(process.env.STABLETOKEN);
     
     try{
         console.log(`Refreshing ${commands.length} applications (/) commands.`);
 
         const data = await rest.put(
-            Routes.applicationCommands(process.env.BETAAPPID),
+            Routes.applicationCommands(process.env.STABLEAPPID),
             { body: commands }
         );
 
@@ -26,5 +27,4 @@ async function refresh(){
     } catch(err){
         console.error(err);
     }
-    
 }
