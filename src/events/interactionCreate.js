@@ -31,9 +31,26 @@ export const event = {
 			console.log(`Modal submitted`);
 			console.log(interaction);
 		} else if (interaction.isAutocomplete()) {
-			// Respond to the modal
-			console.log(`Autocomplete`);
-			console.log(interaction);
+			
+			let autocomplete;
+			if(interaction.options._subcommand == 'remove'){
+				autocomplete = interaction.client.autocomplete.get(`dbLeagueSearch`);
+			} else if(interaction.options._subcommand == 'create' || interaction.options._subcommand == 'add'){
+				autocomplete = interaction.client.autocomplete.get(`apiLeagueSearch`);
+			} else {
+				console.error(`No autocomplete matching ${interaction.commandName} / ${interaction.options._subcommand} was found.`);
+				return;
+			}
+
+			
+
+			try {
+				await autocomplete.execute(interaction);
+			} catch(error) {
+				console.error(`Error executing ${interaction.options._subcommand}`);
+				console.error(error);
+			}
+
 		} else {
 			interaction.reply({
 				content: `I don't know what you did, but this message isn't supposed to be shown`,
