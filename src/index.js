@@ -40,6 +40,14 @@ for(let modal of modals){
     client.modal.set(modal.split(".")[0], modalFile.modal);
 }
 
+// Create autocomplete collection
+client.autocomplete = new Collection();
+const autocompletes = fs.readdirSync("./src/autocompletes").filter(file => file.endsWith(".js"));
+for(let autocomplete of autocompletes){
+    const autocompleteFile = await import(`./autocompletes/${autocomplete}`);
+    client.autocomplete.set(autocomplete.split(".")[0], autocompleteFile.autocomplete);
+}
+
 // Read events
 const events = fs.readdirSync("./src/events").filter(file => file.endsWith(".js"));
 for(let event of events){

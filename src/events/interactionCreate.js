@@ -30,6 +30,10 @@ export const event = {
 			// Respond to the modal
 			console.log(`Modal submitted`);
 			console.log(interaction);
+		} else if (interaction.isAutocomplete()) {
+			// Respond to the modal
+			console.log(`Autocomplete`);
+			console.log(interaction);
 		} else {
 			interaction.reply({
 				content: `I don't know what you did, but this message isn't supposed to be shown`,
