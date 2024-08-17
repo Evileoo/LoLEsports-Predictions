@@ -56,4 +56,4 @@ for(let event of events){
 }
 
 // Login
-await client.login(process.env.STABLETOKEN);
+await client.login(process.env.BETATOKEN);
