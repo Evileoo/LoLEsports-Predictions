@@ -20,7 +20,7 @@ export const autocomplete = {
         });
 
         // Display the leagues
-        await interaction.respond(leagues.cargoquery.map(choice => ({ name: `[${choice.title.Short}] ${choice.title.League}`, value: choice.title.League })));
+        await interaction.respond(leagues.cargoquery.map(choice => ({ name: `[${choice.title.Short}] ${choice.title.League}`, value: choice.title.Short })));
 
     }
 }
