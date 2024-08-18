@@ -14,7 +14,7 @@ export const autocomplete = {
             action: `cargoquery`,
             tables: `Leagues=l`,
             fields: `l.League, l.League_Short=Short`,
-            where : `l.League LIKE '${input}' OR l.League_Short LIKE '${input}' AND l.League_Short <> null`,
+            where : `l.League LIKE '${input}' OR l.League_Short LIKE '${input}'`,
             order_by: `l.League_Short`,
             limit: 25
         });
