@@ -41,7 +41,7 @@ export const event = {
             const routines = await db.query(`SELECT * from routine`);
 
             // Delete outdated predictions
-            await db.query(`DELETE FROM pending_prediction WHERE limit_datetime <= NOW()`);
+            await db.query(`DELETE FROM pending_prediction WHERE limit_datetime < NOW()`);
 
             // Register data to send messages
             // Data structure : [{guildId, channelId, type, leagues:[{name, matches[{team1{name, short}, team2{name, short}, datetime, bestOf, matchId}]}]}]
@@ -73,7 +73,16 @@ export const event = {
                 // Get the index of guild and channel in data
                 let index = data.findIndex(item => item.guildId == routine.routine_guild_id && item.channelId == routine.routine_channel_id);
 
-                if(missingInPredictions.length > 0 && hourDiff < 18) {
+                if(missingInFandom.length > 0 && index == -1) {
+                    const object = {
+                        guildId: routine.routine_guild_id,
+                        channelId: routine.routine_channel_id,
+                        type: `clear`,
+                        league: []
+                    };
+
+                    data.push(object);
+                } else if(hourDiff < 18) {
                     // Update the data object
                     if(index == -1) {
                         const object = {
@@ -99,41 +108,30 @@ export const event = {
 
                     const leagueIndex = data[index].leagues.length - 1;
 
-                    const datetime = routineMatches.filter(match => match.title.MatchId == missingInPredictions[0])[0].title.datetime;
-
-                    for(let match of missingInPredictions) {
-
-                        const addMatch = routineMatches.filter(m => m.title.MatchId == match)[0];
+                    for(let match of routineMatches) {
 
                         const matchData = {
                             team1: {
-                                name: addMatch.title.Team1,
-                                short: addMatch.title.t1Short
+                                name: match.title.Team1,
+                                short: match.title.t1Short
                             },
                             team2: {
-                                name: addMatch.title.Team2,
-                                short: addMatch.title.t2Short
+                                name: match.title.Team2,
+                                short: match.title.t2Short
                             },
-                            datetime: datetime,
-                            bestOf: addMatch.title.BestOf,
-                            matchId: addMatch.title.MatchId
+                            datetime: routineMatches[0].title.datetime,
+                            bestOf: match.title.BestOf,
+                            matchId: match.title.MatchId
                         }
 
                         data[index].leagues[leagueIndex].matches.push(matchData);
 
-                        await db.query(`INSERT INTO pending_prediction (routine_id, limit_datetime, match_id) VALUES (${routine.routine_id}, '${routineMatches[0].title.datetime}', '${match}')`);
+                        if(missingInPredictions.filter(m => m == match.title.MatchId).length > 0){
+                            await db.query(`INSERT INTO pending_prediction (routine_id, limit_datetime, match_id) VALUES (${routine.routine_id}, '${routineMatches[0].title.datetime}', '${match}')`);
+                        }
 
                     }
 
-                } else if(missingInFandom.length > 0 && index == -1) {
-                    const object = {
-                        guildId: routine.routine_guild_id,
-                        channelId: routine.routine_channel_id,
-                        type: `clear`,
-                        league: []
-                    };
-
-                    data.push(object);
                 }
 
             }
