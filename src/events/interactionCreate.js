@@ -19,9 +19,21 @@ export const event = {
 				console.error(error);
 			}
 		} else if (interaction.isButton()) {
-			// respond to the button
-			console.log(`Button clicked`);
-			console.log(interaction);
+			
+			const buttonData = interaction.customId.split(`|||`);
+			
+			const button = interaction.client.buttons.get(buttonData[0]);
+
+			if(!button) console.error(`No button matching ${interaction.commandName} was found.`);
+
+			try {
+				await button.execute(interaction, buttonData);
+			} catch(error) {
+				console.error(`Error executing ${interaction.customId}`);
+				console.error(error);
+			}
+
+
 		} else if (interaction.isUserContextMenuCommand()) {
 			// Respond to the context menu (user)
 			console.log(`User context menu command selected`);
@@ -41,8 +53,6 @@ export const event = {
 				console.error(`No autocomplete matching ${interaction.commandName} / ${interaction.options._subcommand} was found.`);
 				return;
 			}
-
-			
 
 			try {
 				await autocomplete.execute(interaction);
