@@ -17,7 +17,7 @@
     "esm": "^3.2.25",
     "mwn": "^2.0.3",
     "mysql2-async": "^2.0.1",
-    "node-cron": "^3.0.3"
+    "node-schedule": "^2.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
