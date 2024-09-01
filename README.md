@@ -11,4 +11,8 @@ If you have any suggestion, feel free to create an issue
 - [ ] Create GitHub wiki page
 - [ ] Deploy the bot
 
+#### upcoming after 1st release
+
+- [ ] handling different languages
+
 ...
