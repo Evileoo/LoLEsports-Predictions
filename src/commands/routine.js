@@ -1,8 +1,9 @@
 /* eslint-disable no-case-declarations */
  
-import { SlashCommandBuilder, PermissionsBitField, ChannelType, EmbedBuilder } from 'discord.js';
+import { SlashCommandBuilder, PermissionsBitField, ChannelType, EmbedBuilder, time, TimestampStyles } from 'discord.js';
 import { db } from '../connections/database.js';
 import { bot } from '../connections/fandom.js';
+import { routine } from '../functions/routineFunction.js';
 
 export const command = {
     data: new SlashCommandBuilder()
@@ -93,14 +94,23 @@ export const command = {
                 const newRoutineInsert = `INSERT INTO routine (routine_guild_id, routine_channel_id, league) VALUES ('${interaction.guild.id}', '${newChannel.id}', '${league}')`;
                 await db.query(newRoutineInsert);
 
-                // Send a message in the channel with the activated leagues
-                const firstChannelMessage = new EmbedBuilder()
-                .setTitle(`Tracked LoLEsports Leagues`)
-                .setDescription(`${league}`)
-                .setTimestamp()
-                
+                // Create the routine routine
+                await routine.start(interaction.client, interaction.guild.id, newChannel.id);
+
+                // Get next hour
+                const nextHour = new Date(new Date().setHours(new Date().getHours() + 1, 0, 0, 0));
+
+                // Build and send the first message
+                const trackedLeaguesEmbed = new EmbedBuilder()
+                .setTitle(`Tracked LoL Esports leagues`)
+                .setDescription(league)
+                .addFields(
+                    { name: `Predictions starts in`, value: `${time(nextHour, TimestampStyles.RelativeTime)}` }
+                )
+                .setTimestamp();
+
                 await newChannel.send({
-                    embeds: [firstChannelMessage]
+                    embeds: [trackedLeaguesEmbed]
                 });
 
                 break;
