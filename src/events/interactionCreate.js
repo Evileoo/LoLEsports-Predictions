@@ -47,7 +47,7 @@ export const event = {
 			let autocomplete;
 			if(interaction.options._subcommand == 'remove'){
 				autocomplete = interaction.client.autocomplete.get(`dbLeagueSearch`);
-			} else if(interaction.options._subcommand == 'create' || interaction.options._subcommand == 'add'){
+			} else if(interaction.options._subcommand == 'create' || interaction.options._subcommand == 'add' || interaction.commandName == 'stats' || interaction.commandName == 'rankings'){
 				autocomplete = interaction.client.autocomplete.get(`apiLeagueSearch`);
 			} else {
 				console.error(`No autocomplete matching ${interaction.commandName} / ${interaction.options._subcommand} was found.`);
