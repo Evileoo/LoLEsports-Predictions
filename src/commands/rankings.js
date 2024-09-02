@@ -25,6 +25,17 @@ export const command = {
         .setRequired(false)
         .setAutocomplete(true)
     )
+    .addIntegerOption(option =>
+        option
+        .setName("bestof")
+        .setDescription("type of best of")
+        .setRequired(false)
+        .addChoices(
+            { name: `BO1`, value: 1 },
+            { name: `BO3`, value: 3 },
+            { name: `BO5`, value: 5 },
+        )
+    )
     , async execute(interaction){
         console.log(interaction);
     }
