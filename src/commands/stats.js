@@ -30,7 +30,7 @@ export const command = {
         .setRequired(false)
         .setAutocomplete(true)
     )
-    .addStringOption(option =>
+    .addIntegerOption(option =>
         option
         .setName("year")
         .setDescription("year of matches the user bet on")
