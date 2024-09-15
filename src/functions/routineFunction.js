@@ -1,6 +1,7 @@
-import { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, TimestampStyles, time } from 'discord.js';
+import { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, AttachmentBuilder } from 'discord.js';
 import { db } from '../connections/database.js';
 import { request } from './fandomRequest.js'
+import { matchCanvas } from './matchCanvas.js';
 import schedule from 'node-schedule';
 
 export const routine = {
@@ -12,6 +13,8 @@ export const routine = {
             Team2: ``,
             t1Short: ``,
             t2Short: ``,
+            t1Image: ``,
+            t2Image: ``,
             datetime: ``,
             BestOf: ``,
             MatchId: ``,
@@ -20,7 +23,7 @@ export const routine = {
         }];
 
         // Create the job instance
-        schedule.scheduleJob(guildId + channelId, '0 0 0-23 * * *', async function(){
+        //schedule.scheduleJob(guildId + channelId, '0 0 0-23 * * *', async function(){
             
             // Keep the last request results
             const lastRequest = fandom;
@@ -47,7 +50,6 @@ export const routine = {
 
                 // Get date
                 const now = new Date();
-                const nextHour = new Date(now.getTime() + 3600000);
                 const utcNow = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCMilliseconds());
 
                 for(let routine of routines) {
@@ -97,11 +99,13 @@ export const routine = {
                             const matchData = {
                                 team1: {
                                     name: match.Team1,
-                                    short: match.t1Short
+                                    short: match.t1Short,
+                                    image: match.t1Image
                                 },
                                 team2: {
                                     name: match.Team2,
-                                    short: match.t2Short
+                                    short: match.t2Short,
+                                    image: match.t2Image
                                 },
                                 datetime: match.datetime,
                                 bestOf: match.BestOf,
@@ -146,9 +150,6 @@ export const routine = {
                     const trackedLeaguesEmbed = new EmbedBuilder()
                     .setTitle(`Tracked LoL Esports leagues`)
                     .setDescription(leagues.map(l => l.league).join(`, `))
-                    .addFields(
-                        { name: `Next update`, value: `${time(nextHour, TimestampStyles.RelativeTime)}` }
-                    )
                     .setTimestamp();
 
                     await channel.send({
@@ -172,6 +173,13 @@ export const routine = {
                         await channel.bulkDelete(pinMessage, true).catch(() => null);
 
                         for(let match of league.matches) {
+
+                            // Generate the match canvas
+                            const canvas = await matchCanvas.generate(match.team1.name, match.team1.image, match.team2.name, match.team2.image);
+
+                            // Build the attachment
+                            const image = new AttachmentBuilder(await canvas.encode('png'), { name: 'image.png' });
+
                             const buttonFileName = `routine`;
 
                             if(match.bestOf == 1){
@@ -188,14 +196,10 @@ export const routine = {
                                 // Build row
                                 const bo1row = new ActionRowBuilder()
                                 .addComponents(bo1t1, bo1t2);
-                            
-                                // Build Embed
-                                const bo1embed = new EmbedBuilder()
-                                .setTitle(`[${match.team1.short}] ${match.team1.name} VS [${match.team2.short}] ${match.team2.name}`);
 
                                 // Send message
                                 channel.send({
-                                    embeds: [bo1embed],
+                                    files: [image],
                                     components: [bo1row]
                                 });
                             
@@ -223,14 +227,10 @@ export const routine = {
                                 .addComponents(bo3t1s20, bo3t1s21);
                                 const bo3t2row = new ActionRowBuilder()
                                 .addComponents(bo3t2s20, bo3t2s21);
-                            
-                                // Build Embed
-                                const bo3embed = new EmbedBuilder()
-                                .setTitle(`[${match.team1.short}] ${match.team1.name} VS [${match.team2.short}] ${match.team2.name}`);
 
                                 // Send message
                                 channel.send({
-                                    embeds: [bo3embed],
+                                    files: [image],
                                     components: [bo3t1row, bo3t2row]
                                 });
                             
@@ -266,34 +266,18 @@ export const routine = {
                                 .addComponents(bo5t1s30, bo5t1s31, bo5t1s32);
                                 const bo5t2row = new ActionRowBuilder()
                                 .addComponents(bo5t2s30, bo5t2s31, bo5t2s32);
-                            
-                                // Build Embed
-                                const bo3embed = new EmbedBuilder()
-                                .setTitle(`[${match.team1.short}] ${match.team1.name} VS [${match.team2.short}] ${match.team2.name}`);
 
                                 // Send message
                                 channel.send({
-                                    embeds: [bo3embed],
+                                    files: [image],
                                     components: [bo5t1row, bo5t2row]
                                 });
                             }
                         }
                     }
                 }
-            } else {
-                // Get guild and channel
-                const guild = await client.guilds.fetch(guildId);
-                const channel = await guild.channels.cache.get(channelId);
-
-                const now = new Date();
-                const nextHour = new Date(now.getTime() + 3600000);
-
-                // send message
-                await channel.send({
-                    content: `error while fetching data.\nRetrying in ${time(nextHour, TimestampStyles.RelativeTime)}`
-                });
             }
-        });
+        //});
     },
     // Delete a predictions routine
     async delete(guildId, channelId){
