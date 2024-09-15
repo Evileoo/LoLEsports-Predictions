@@ -1,1 +1,0 @@
-select * from pending_prediction;
