@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
  
-import { SlashCommandBuilder, PermissionsBitField, ChannelType, EmbedBuilder, time, TimestampStyles } from 'discord.js';
+import { SlashCommandBuilder, PermissionsBitField, ChannelType, EmbedBuilder } from 'discord.js';
 import { db } from '../connections/database.js';
 import { bot } from '../connections/fandom.js';
 import { routine } from '../functions/routineFunction.js';
