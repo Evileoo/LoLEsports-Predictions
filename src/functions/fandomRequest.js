@@ -42,7 +42,8 @@ async function createJob(){
                             format: `json`,
                             titles: `File:${r.t2Image.replaceAll(" ", "_")}`,
                             prop: `imageinfo`,
-                            iiprop: `url`
+                            iiprop: `url`,
+                            iiurlheight: `150`
                         })).query.pages[0].imageinfo[0].url;
     
                         r.t2Image = teamLogoLink2;
