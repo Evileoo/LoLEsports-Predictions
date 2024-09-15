@@ -94,24 +94,18 @@ export const command = {
                 const newRoutineInsert = `INSERT INTO routine (routine_guild_id, routine_channel_id, league) VALUES ('${interaction.guild.id}', '${newChannel.id}', '${league}')`;
                 await db.query(newRoutineInsert);
 
-                // Create the routine routine
-                await routine.start(interaction.client, interaction.guild.id, newChannel.id);
-
-                // Get next hour
-                const nextHour = new Date(new Date().setHours(new Date().getHours() + 1, 0, 0, 0));
-
                 // Build and send the first message
                 const trackedLeaguesEmbed = new EmbedBuilder()
                 .setTitle(`Tracked LoL Esports leagues`)
                 .setDescription(league)
-                .addFields(
-                    { name: `Predictions starts in`, value: `${time(nextHour, TimestampStyles.RelativeTime)}` }
-                )
                 .setTimestamp();
 
                 await newChannel.send({
                     embeds: [trackedLeaguesEmbed]
                 });
+                
+                // Create the routine routine
+                await routine.start(interaction.client, interaction.guild.id, newChannel.id);
 
                 break;
             case "delete":
