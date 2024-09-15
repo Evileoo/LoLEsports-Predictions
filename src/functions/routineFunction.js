@@ -68,7 +68,7 @@ export const routine = {
                     // Get the index of guild and channel in data
                     let index = data.findIndex(d => d.guildId == routine.routine_guild_id && d.channelId == routine.routine_channel_id);
 
-                    if(hourDiff < 18) {
+                    if(newMatches.length > 0 && hourDiff < 18) {
 
                         // Update the data object
                         if(index == -1) {
