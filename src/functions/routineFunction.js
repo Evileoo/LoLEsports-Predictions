@@ -23,7 +23,7 @@ export const routine = {
         }];
 
         // Create the job instance
-        //schedule.scheduleJob(guildId + channelId, '0 0 0-23 * * *', async function(){
+        schedule.scheduleJob(guildId + channelId, '0 0 0-23 * * *', async function(){
             
             // Keep the last request results
             const lastRequest = fandom;
@@ -277,7 +277,7 @@ export const routine = {
                     }
                 }
             }
-        //});
+        });
     },
     // Delete a predictions routine
     async delete(guildId, channelId){

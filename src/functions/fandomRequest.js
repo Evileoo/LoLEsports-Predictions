@@ -4,7 +4,7 @@ import { bot } from '../connections/fandom.js';
 let result;
 let success = false;
 async function createJob(){
-    //schedule.scheduleJob('fandom', '0 45 0-23 * * *', async function(){
+    schedule.scheduleJob('fandom', '0 45 0-23 * * *', async function(){
         let attempts = 0, maxAttempts = 3;
         success = false;
         while(!success && attempts < maxAttempts){
@@ -61,7 +61,7 @@ async function createJob(){
                 }
             }
         }
-    //});
+    });
 }
 
 function getResult(){
