@@ -23,7 +23,7 @@ export const routine = {
         }];
 
         // Create the job instance
-        schedule.scheduleJob(guildId + channelId, '0 0 0-23 * * *', async function(){
+        //schedule.scheduleJob(guildId + channelId, '0 0 0-23 * * *', async function(){
             
             // Keep the last request results
             const lastRequest = fandom;
@@ -68,7 +68,7 @@ export const routine = {
                     // Get the index of guild and channel in data
                     let index = data.findIndex(d => d.guildId == routine.routine_guild_id && d.channelId == routine.routine_channel_id);
 
-                    if(newMatches.length > 0 && hourDiff < 18) {
+                    if(/*newMatches.length > 0 && */hourDiff < 18) {
 
                         // Update the data object
                         if(index == -1) {
@@ -157,7 +157,6 @@ export const routine = {
                     });
 
                     for(let league of routine.leagues) {
-
                         // Get the full league data
                         const leagueName = request.getResult().result.find(m => m.LeagueShort == league.name);
 
@@ -173,12 +172,16 @@ export const routine = {
                         await channel.bulkDelete(pinMessage, true).catch(() => null);
 
                         for(let match of league.matches) {
-
                             // Generate the match canvas
                             const canvas = await matchCanvas.generate(match.team1.name, match.team1.image, match.team2.name, match.team2.image);
 
                             // Build the attachment
-                            const image = new AttachmentBuilder(await canvas.encode('png'), { name: 'image.png' });
+                            const image = new AttachmentBuilder(await canvas.encode("png"), { name: `image.png` });
+
+                            // Build the embed
+                            const embed = new EmbedBuilder()
+                            .setDescription(`[${match.team1.short}] ${match.team1.name} VS [${match.team2.short}] ${match.team2.name}`)
+                            .setImage(`attachment://${image.name}`);
 
                             const buttonFileName = `routine`;
 
@@ -198,7 +201,8 @@ export const routine = {
                                 .addComponents(bo1t1, bo1t2);
 
                                 // Send message
-                                channel.send({
+                                await channel.send({
+                                    embeds: [embed],
                                     files: [image],
                                     components: [bo1row]
                                 });
@@ -229,7 +233,8 @@ export const routine = {
                                 .addComponents(bo3t2s20, bo3t2s21);
 
                                 // Send message
-                                channel.send({
+                                await channel.send({
+                                    embeds: [embed],
                                     files: [image],
                                     components: [bo3t1row, bo3t2row]
                                 });
@@ -268,7 +273,8 @@ export const routine = {
                                 .addComponents(bo5t2s30, bo5t2s31, bo5t2s32);
 
                                 // Send message
-                                channel.send({
+                                await channel.send({
+                                    embeds: [embed],
                                     files: [image],
                                     components: [bo5t1row, bo5t2row]
                                 });
@@ -277,7 +283,7 @@ export const routine = {
                     }
                 }
             }
-        });
+        //});
     },
     // Delete a predictions routine
     async delete(guildId, channelId){

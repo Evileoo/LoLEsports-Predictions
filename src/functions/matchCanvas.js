@@ -6,8 +6,9 @@ async function teamCanvas(name, image){
     const ctx = canvas.getContext("2d");
 
     // Create canvas background
-    ctx.fillStyle = "#111111";
+    ctx.globalAlpha = 0;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalAlpha = 1;
 
     if(image != null){
         const teamLogo = await Canvas.loadImage(image);
@@ -90,8 +91,9 @@ export const matchCanvas = {
         // Create canvas base
         const canvas = Canvas.createCanvas(team1Canvas.width + 100 + team2Canvas.width, team1Canvas.height);
         const context = canvas.getContext("2d");
-        context.fillStyle = "#111111";
+        context.globalAlpha = 0;
         context.fillRect(0, 0, canvas.width, canvas.height);
+        context.globalAlpha = 1;
         context.font = '30px sans-serif';
         context.fillStyle = '#ffffff';
 
