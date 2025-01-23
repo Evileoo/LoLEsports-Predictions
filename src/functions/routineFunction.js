@@ -173,14 +173,13 @@ export const routine = {
 
                         for(let match of league.matches) {
                             // Generate the match canvas
-                            const canvas = await matchCanvas.generate(match.team1.name, match.team1.image, match.team2.name, match.team2.image);
+                            const canvas = await matchCanvas.generate(match.team1.name, match.team1.short, match.team1.image, match.team2.name, match.team2.short, match.team2.image);
 
                             // Build the attachment
                             const image = new AttachmentBuilder(await canvas.encode("png"), { name: `image.png` });
 
                             // Build the embed
                             const embed = new EmbedBuilder()
-                            .setDescription(`[${match.team1.short}] ${match.team1.name} VS [${match.team2.short}] ${match.team2.name}`)
                             .setImage(`attachment://${image.name}`);
 
                             const buttonFileName = `routine`;

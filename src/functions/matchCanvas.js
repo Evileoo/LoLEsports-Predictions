@@ -1,6 +1,9 @@
 import Canvas from '@napi-rs/canvas';
 
-async function teamCanvas(name, image){
+async function teamCanvas(name, short, image){
+
+    const teamName = `[${short}] ${name}`;
+
     // Generate canvas and context
     const canvas = Canvas.createCanvas(300, 200);
     const ctx = canvas.getContext("2d");
@@ -39,7 +42,7 @@ async function teamCanvas(name, image){
         // Reduce the font size if needed
         do {
             ctx.font = `${fontSize}px sans-serif`;
-            const textWidth = ctx.measureText(name).width;
+            const textWidth = ctx.measureText(teamName).width;
 
             if(textWidth <= canvas.width) {
                 break;
@@ -50,10 +53,10 @@ async function teamCanvas(name, image){
 
         // Place the text at bottom of canvas and center it
         const textY = canvas.height - 10;
-        const textX = (canvas.width - ctx.measureText(name).width) / 2;
+        const textX = (canvas.width - ctx.measureText(teamName).width) / 2;
 
         // Draw the text into the canvas
-        ctx.fillText(name, textX, textY);
+        ctx.fillText(teamName, textX, textY);
     } else {
         // Define the team name to display, it's color and it's size
         let fontSize = 50;
@@ -62,7 +65,7 @@ async function teamCanvas(name, image){
         // Reduce the font size if needed
         do {
             ctx.font = `${fontSize}px sans-serif`;
-            const textWidth = ctx.measureText(name).width;
+            const textWidth = ctx.measureText(teamName).width;
 
             if(textWidth <= canvas.width) {
                 break;
@@ -72,21 +75,21 @@ async function teamCanvas(name, image){
         } while(fontSize > 0);
 
         // Place the text in center
-        const textY = (canvas.height - ctx.measureText(name).height) / 2;
-        const textX = (canvas.width - ctx.measureText(name).width) / 2;
+        const textY = (canvas.height - ctx.measureText(teamName).height) / 2;
+        const textX = (canvas.width - ctx.measureText(teamName).width) / 2;
 
         // Draw the text into the canvas
-        ctx.fillText(name, textX, textY);
+        ctx.fillText(teamName, textX, textY);
     }
 
     return canvas;
 }
 
 export const matchCanvas = {
-    async generate(team1Name, team1Image, team2Name, team2Image){
+    async generate(team1Name, team1Short, team1Image, team2Name, team2Short, team2Image){
         // Generate each team canvas
-        const team1Canvas = await teamCanvas(team1Name, team1Image);
-        const team2Canvas = await teamCanvas(team2Name, team2Image);
+        const team1Canvas = await teamCanvas(team1Name, team1Short, team1Image);
+        const team2Canvas = await teamCanvas(team2Name, team2Short, team2Image);
 
         // Create canvas base
         const canvas = Canvas.createCanvas(team1Canvas.width + 100 + team2Canvas.width, team1Canvas.height);
