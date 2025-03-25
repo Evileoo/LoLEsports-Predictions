@@ -13,10 +13,10 @@
     "d": "node --env-file .env ./src/deploy-commands.js"
   },
   "dependencies": {
-    "@napi-rs/canvas": "^0.1.55",
-    "discord.js": "^14.15.3",
+    "@napi-rs/canvas": "^0.1.68",
+    "discord.js": "^14.18.0",
     "esm": "^3.2.25",
-    "mwn": "^2.0.3",
+    "mwn": "^2.0.4",
     "mysql2-async": "^2.0.1",
     "node-schedule": "^2.1.1"
   },
